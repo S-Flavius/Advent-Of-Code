@@ -28,8 +28,53 @@ fun main() {
         return gamma * epsilon
     }
 
+    fun getZerosAndOnes(input: List<String>, index: Int): List<Int> {
+        val zerosOnes = mutableListOf<Int>()
+        zerosOnes.add(0)
+        zerosOnes.add(0)
+        for (number in input) {
+            if (number[index] == '0') zerosOnes[0]++ else zerosOnes[1]++
+        }
+        return zerosOnes
+    }
+
+    fun getNumber(input: List<String>, mode: String): Int {
+        var lastNumbers = mutableListOf<String>()
+
+        lastNumbers.addAll(input)
+
+        for (index in input.indices) {
+            if (lastNumbers.size == 1) return lastNumbers[0].toInt(2)
+            val zerosOnes = getZerosAndOnes(lastNumbers, index)
+
+            val goodNumbers = mutableListOf<String>()
+            if (mode == "high") {
+                if (zerosOnes[0] > zerosOnes[1]) {
+                    for (number in lastNumbers)
+                        if (number[index] == '0') goodNumbers.add(number)
+                } else {
+                    for (number in lastNumbers)
+                        if (number[index] == '1') goodNumbers.add(number)
+                }
+            } else {
+                if (zerosOnes[0] > zerosOnes[1]) {
+                    for (number in lastNumbers)
+                        if (number[index] == '1') goodNumbers.add(number)
+                } else {
+                    for (number in lastNumbers)
+                        if (number[index] == '0') goodNumbers.add(number)
+                }
+            }
+            lastNumbers = goodNumbers
+        }
+        return -1
+    }
+
     fun part2(input: List<String>): Int {
-        return 0
+        val oxygen = getNumber(input, "high")
+        val scrubber = getNumber(input, "low")
+
+        return oxygen * scrubber
     }
 
     // test if implementation meets criteria from the description, like:
@@ -39,5 +84,5 @@ fun main() {
 
     val input = readInput("\\Day03\\Day03")
     println(part1(input))
-//    println(part2(input))
+    println(part2(input))
 }

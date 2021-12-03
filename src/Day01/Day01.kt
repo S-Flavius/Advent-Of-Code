@@ -1,3 +1,7 @@
+package Day01
+
+import readInput
+
 fun main() {
     fun part1(input: List<String>): Int {
         var lastNum = input[0].toInt()
